@@ -61,11 +61,30 @@ $(function() {
       url: '/my/article/updatecate',
       data: $(this).serialize(),
       success: res => {
-          if (res.status !==0) return layer.msg('更新分类失败！')
-          layer.msg('更新分类成功！')
-          initCateList()
-          layer.close(indexEdit)
+        if (res.status !== 0) return layer.msg('更新分类失败！')
+        layer.msg('更新分类成功！')
+        initCateList()
+        layer.close(indexEdit)
       }
     })
   })
+
+  $('tbody').on('click', '.btn-delete', function() {
+    const id = $(this).attr('data-id')
+    layer.confirm("确定删除吗？", { icon: 3, title: "提示" },
+      function(index) {
+        $.ajax({
+          type: 'GET',
+          url: "/my/article/deletecate/" + id,
+          success: res => {
+            if (res.status !== 0) return layer.msg('删除数据失败！')
+            layer.msg('删除数据成功！')
+            layer.close(index)
+            initCateList()
+          }
+        })
+      },
+    )
+  })
+
 })
